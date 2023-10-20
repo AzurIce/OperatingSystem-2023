@@ -2,7 +2,7 @@ name: mkdocs github pages
 
 on:
   push:
-    branches: ["master"]  # Set a branch that will trigger a deployment
+    branches: ["main"]  # Set a branch that will trigger a deployment
   pull_request:
   workflow_dispatch:
 
