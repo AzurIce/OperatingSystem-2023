@@ -11,6 +11,7 @@ nav:
   - 关于: "index.md"
   - 实验:
     - 实验0 - 配置环境: "实验0 - 配置环境.md"
+    - 实验1 - 独立的可执行程序: "实验1 - 独立的可执行程序.md"
 
 extra_javascript:
   - https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js
