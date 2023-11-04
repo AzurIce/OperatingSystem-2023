@@ -9,9 +9,11 @@ edit_uri: edit/master/docs/
 # Contents
 nav:
   - 关于: "index.md"
+  - 重构版实验手册: "重构版实验手册/index.md"
   - 实验:
     - 实验0 - 配置环境: "实验0 - 配置环境.md"
     - 实验1 - 独立的可执行程序: "实验1 - 独立的可执行程序.md"
+    - 实验2 - 裸机环境和最小化内核: "实验2 - 裸机环境和最小化内核.md"
 
 extra_javascript:
   - https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js
