@@ -6,7 +6,13 @@ KERNEL_BIN := $(KERNEL_ELF).bin
 DISASM_TMP := target/$(TARGET)/$(MODE)/asm
 
 # BOARD
-SBI ?= rustsbi
+# SBI ?= rustsbi
+SBI ?= rustsbi-qemu-Prereleased-2023-10-27
+# SBI ?= rustsbi-qemu-v0.2.0-alpha.2
+# SBI ?= rustsbi-qemu-v0.1.1
+# SBI ?= rustsbi-qemu-v0.1.0
+# SBI ?= rustsbi-qemu-v0.0.2
+# SBI ?= rustsbi-qemu-v0.0.1
 BOOTLOADER := ../bootloader/$(SBI).bin
 
 # KERNEL ENTRY
