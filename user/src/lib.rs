@@ -1,5 +1,7 @@
 #![no_std]
 
+#[macro_use]
+pub mod console;
 mod syscall;
 
 use syscall::*;
