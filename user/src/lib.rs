@@ -3,6 +3,7 @@
 #[macro_use]
 pub mod console;
 mod syscall;
+mod lang_items;
 
 use syscall::*;
 
