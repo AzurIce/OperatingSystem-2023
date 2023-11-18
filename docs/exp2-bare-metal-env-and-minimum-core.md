@@ -16,7 +16,7 @@
 cargo build --release
 ```
 
-![image-20231104101851959](./实验2 - 裸机环境和最小化内核.assets/image-20231104101851959.png)
+![image-20231104101851959](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104101851959.png)
 
 然后，再把编译生成的 ELF 执行文件转成 binary 文件：
 
@@ -34,7 +34,7 @@ rust-objcopy --binary-architecture=riscv64 target/riscv64gc-unknown-none-elf/rel
 qemu-system-riscv64 -machine virt -nographic -bios ../bootloader/rustsbi.bin -device loader,file=target/riscv64gc-unknown-none-elf/release/os.bin,addr=0x80200000
 ```
 
-![image-20231104103120299](./实验2 - 裸机环境和最小化内核.assets/image-20231104103120299.png)
+![image-20231104103120299](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104103120299.png)
 
 这时候运行会进入死循环，原因是操作系统的入口地址不对！
 
@@ -48,7 +48,7 @@ qemu-system-riscv64 -machine virt -nographic -bios ../bootloader/rustsbi.bin -de
 rust-readobj -h target/riscv64gc-unknown-none-elf/release/os
 ```
 
-![image-20231104103501913](./实验2 - 裸机环境和最小化内核.assets/image-20231104103501913.png)
+![image-20231104103501913](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104103501913.png)
 
 因此，我们还需要修改 os ELF执行程序的内存布局。
 
@@ -431,7 +431,7 @@ debug: build
 
 然后 `make run`：
 
-![image-20231104110813594](./实验2 - 裸机环境和最小化内核.assets/image-20231104110813594.png)
+![image-20231104110813594](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104110813594.png)
 
 ## 二、思考问题
 
@@ -439,7 +439,7 @@ debug: build
 
 linker.ld 规定了整个程序各个数据段的存储布局，本实验中最关键的功能就是以 `BASE_ADDRESS` 即 `0x80200000` 配置入口，使用 `rust-readobj` 分析可以得到：
 
-![image-20231104112738549](./实验2 - 裸机环境和最小化内核.assets/image-20231104112738549.png)
+![image-20231104112738549](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104112738549.png)
 
 与先前未使用自定 linker 时相比，入口地址设定为了 `0x80200000`，使得 bootloader 能够在这个内存地址找到我们的程序。
 
@@ -457,9 +457,9 @@ sbi 模块封装了读取字符、输出字符、退出（关机）的 sbi 调�
 
 > 经测试，依然可以运行
 
-![image-20231104115253178](./实验2 - 裸机环境和最小化内核.assets/image-20231104115253178.png)
+![image-20231104115253178](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104115253178.png)
 
-![image-20231104115221268](./实验2 - 裸机环境和最小化内核.assets/image-20231104115221268.png)
+![image-20231104115221268](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104115221268.png)
 
 #### [0.2.0-alpha.2](https://github.com/rustsbi/rustsbi-qemu/releases/tag/v0.2.0-alpha.2)
 
@@ -467,45 +467,45 @@ sbi 模块封装了读取字符、输出字符、退出（关机）的 sbi 调�
 
 > 原因未知（），问题应该在于 rustsbi 中，因为 sbi 甚至无输出，只运行 sbi 表现一样。
 
-![image-20231104115456217](./实验2 - 裸机环境和最小化内核.assets/image-20231104115456217.png)
+![image-20231104115456217](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104115456217.png)
 
-![image-20231104115601638](./实验2 - 裸机环境和最小化内核.assets/image-20231104115601638.png)
+![image-20231104115601638](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104115601638.png)
 
 ### [version 0.1.1](https://github.com/rustsbi/rustsbi-qemu/releases/tag/v0.1.1)
 
 > 无问题
 
-![image-20231104120202657](./实验2 - 裸机环境和最小化内核.assets/image-20231104120202657.png)
+![image-20231104120202657](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104120202657.png)
 
-![image-20231104120151999](./实验2 - 裸机环境和最小化内核.assets/image-20231104120151999.png)
+![image-20231104120151999](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104120151999.png)
 
 ### [version 0.1.0](https://github.com/rustsbi/rustsbi-qemu/releases/tag/v0.1.0)
 
 > 无问题
 
-![image-20231104120255557](./实验2 - 裸机环境和最小化内核.assets/image-20231104120255557.png)
+![image-20231104120255557](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104120255557.png)
 
-![image-20231104120334614](./实验2 - 裸机环境和最小化内核.assets/image-20231104120334614.png)
+![image-20231104120334614](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104120334614.png)
 
 ### [version 0.0.2](https://github.com/rustsbi/rustsbi-qemu/releases/tag/v0.0.2)
 
 > 无问题
 
-![image-20231104120502038](./实验2 - 裸机环境和最小化内核.assets/image-20231104120502038.png)
+![image-20231104120502038](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104120502038.png)
 
-![image-20231104120455428](./实验2 - 裸机环境和最小化内核.assets/image-20231104120455428.png)
+![image-20231104120455428](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104120455428.png)
 
 ### [version 0.0.1](https://github.com/rustsbi/rustsbi-qemu/releases/tag/v0.0.1)
 
 > 无问题
 
-![image-20231104120527967](./实验2 - 裸机环境和最小化内核.assets/image-20231104120527967.png)
+![image-20231104120527967](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104120527967.png)
 
-![image-20231104120559547](./实验2 - 裸机环境和最小化内核.assets/image-20231104120559547.png)
+![image-20231104120559547](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104120559547.png)
 
 ## 三、Git 提交截图
 
-![image-20231104142306704](./实验2 - 裸机环境和最小化内核.assets/image-20231104142306704.png)
+![image-20231104142306704](./exp2-bare-metal-env-and-minimum-core.assets/image-20231104142306704.png)
 
 ## 四、其他说明
 

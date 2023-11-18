@@ -26,7 +26,7 @@ cd /mnt
 cargo new os --bin
 ```
 
-> ![image-20231020110038656](./实验1 - 独立的可执行程序.assets/image-20231020110038656.png)
+> ![image-20231020110038656](./exp1-independent-application.assets/image-20231020110038656.png)
 
 运行查看结果：
 
@@ -35,7 +35,7 @@ cd os
 cargo run
 ```
 
-> ![image-20231020110055038](./实验1 - 独立的可执行程序.assets/image-20231020110055038.png)
+> ![image-20231020110055038](./exp1-independent-application.assets/image-20231020110055038.png)
 
 ### 2. 移除标准库依赖
 
@@ -67,7 +67,7 @@ fn panic(_info: &PanicInfo) -> ! {
 
 现在如果直接使用 `cargo build` 可能会出现编译错误：
 
-![image-20231020110808299](./实验1 - 独立的可执行程序.assets/image-20231020110808299.png)
+![image-20231020110808299](./exp1-independent-application.assets/image-20231020110808299.png)
 
 需要执行如下命令添加相关软件包：
 
@@ -80,7 +80,7 @@ rustup component add rust-src
 
 再进行构建：
 
-![image-20231020111843488](./实验1 - 独立的可执行程序.assets/image-20231020111843488.png)
+![image-20231020111843488](./exp1-independent-application.assets/image-20231020111843488.png)
 
 然后可以对独立的可执行程序进行分析：
 
@@ -90,7 +90,7 @@ rust-readobj -h target/riscv64gc-unknown-none-elf/debug/os
 rust-objdump -S target/riscv64gc-unknown-none-elf/debug/os
 ```
 
-![image-20231020111958020](./实验1 - 独立的可执行程序.assets/image-20231020111958020.png)
+![image-20231020111958020](./exp1-independent-application.assets/image-20231020111958020.png)
 
 分析可以发现编译生成的二进制程序是一个空程序，这是因为编译器找不到入口函数，所以没有生成后续的代码。
 
@@ -119,7 +119,7 @@ qemu-riscv64 target/riscv64gc-unknown-none-elf/debug/os
 
 可以发现似乎是在执行一个死循环，即程序无输出，也不结束：
 
-![image-20231020112401623](./实验1 - 独立的可执行程序.assets/image-20231020112401623.png)
+![image-20231020112401623](./exp1-independent-application.assets/image-20231020112401623.png)
 
 #### 2> 实现退出机制
 
@@ -166,7 +166,7 @@ extern "C" fn _start() {
 
 再编译运行，发现程序可以直接正常退出：
 
-![image-20231020112631823](./实验1 - 独立的可执行程序.assets/image-20231020112631823.png)
+![image-20231020112631823](./exp1-independent-application.assets/image-20231020112631823.png)
 
 #### 3> 实现输出支持
 
@@ -282,7 +282,7 @@ macro_rules! println {
 
 编译运行：
 
-![image-20231020113256882](./实验1 - 独立的可执行程序.assets/image-20231020113256882.png)
+![image-20231020113256882](./exp1-independent-application.assets/image-20231020113256882.png)
 
 ## 二、思考问题
 
@@ -304,7 +304,7 @@ macro_rules! println {
 
 ## 三、Git 提交截图
 
-![image-20231020122900341](./实验1 - 独立的可执行程序.assets/image-20231020122900341.png)
+![image-20231020122900341](./exp1-independent-application.assets/image-20231020122900341.png)
 
 ## 四、其他说明
 

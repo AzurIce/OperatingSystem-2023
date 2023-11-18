@@ -14,7 +14,7 @@ https://github.com/AzurIce/OperatingSystem-2023
 
 首先创建一个项目：
 
-![image-20230915111720950](./实验0 - 配置环境.assets/image-20230915111720950.png)
+![image-20230915111720950](./exp0-env-configuration.assets/image-20230915111720950.png)
 
 获取 openeuler 的 docker 镜像：
 
@@ -22,7 +22,7 @@ https://github.com/AzurIce/OperatingSystem-2023
 docker pull openeuler/openeuler
 ```
 
-![image-20230915111517477](./实验0 - 配置环境.assets/image-20230915111517477.png)
+![image-20230915111517477](./exp0-env-configuration.assets/image-20230915111517477.png)
 
 进入到项目目录，创建容器并启动：
 
@@ -32,7 +32,7 @@ cd OperatingSystem-2023
 docker run -it --mount type=bind,source=$(PWD),destination=/mnt openeuler/openeuler
 ```
 
-![image-20230915111653570](./实验0 - 配置环境.assets/image-20230915111653570.png)
+![image-20230915111653570](./exp0-env-configuration.assets/image-20230915111653570.png)
 
 然后便进入了 openeuler 环境，并可以通过 `/mnt` 目录访问到项目文件夹。
 
@@ -78,7 +78,7 @@ dnf install autoconf automake gcc gcc-c++ kernel-devel curl libmpc-devel mpfr-de
 
 > 坑1:
 >
-> ![image-20230915113559614](./实验0 - 配置环境.assets/image-20230915113559614.png)
+> ![image-20230915113559614](./exp0-env-configuration.assets/image-20230915113559614.png)
 >
 > 先执行一次 `dnf distro-sync` 即可
 
@@ -113,11 +113,11 @@ docker commit -m "Configured environment" -a "AzurIce" f7ca2f7d1322077670897839a
 
 那一大长串hash字符串来源于这里：
 
-![image-20230915114608023](./实验0 - 配置环境.assets/image-20230915114608023.png)
+![image-20230915114608023](./exp0-env-configuration.assets/image-20230915114608023.png)
 
 然后可以在 Images 中看到我们刚刚创建的镜像：
 
-![image-20230915114644557](./实验0 - 配置环境.assets/image-20230915114644557.png)
+![image-20230915114644557](./exp0-env-configuration.assets/image-20230915114644557.png)
 
 可以使用
 
@@ -134,4 +134,4 @@ docker run -it --mount type=bind,source=$(PWD),destination=/mnt my_openeuler
 
 来用刚才的镜像创建一个容器并运行，其环境正是刚才保存时的环境：
 
-![image-20230920131524512](./实验0 - 配置环境.assets/image-20230920131524512.png)
+![image-20230920131524512](./exp0-env-configuration.assets/image-20230920131524512.png)
