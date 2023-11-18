@@ -1172,5 +1172,7 @@ https://mit-public-courses-cn-translatio.gitbook.io/mit6-s081/lec03-os-organizat
 
 https://crva.ict.ac.cn/wjxz/202202/P020220217666841292320.pdf
 
+https://lgl88911.github.io/2021/02/15/RISC-V%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8%E5%8F%8A%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%84%E8%8C%83/
+
 
 
