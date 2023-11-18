@@ -1163,3 +1163,14 @@ fn main() -> i32 {
 ## 三、Git 提交记录
 
 ![image-20231118135620679](./exp3-batch-and-privilege.assets/image-20231118135620679.png)
+
+## 参考
+
+https://rcore-os.cn/rCore-Tutorial-Book-v3/chapter2/4trap-handling.html
+
+https://mit-public-courses-cn-translatio.gitbook.io/mit6-s081/lec03-os-organization-and-system-calls/3.5-user-kernel-mode-switch
+
+https://crva.ict.ac.cn/wjxz/202202/P020220217666841292320.pdf
+
+
+
