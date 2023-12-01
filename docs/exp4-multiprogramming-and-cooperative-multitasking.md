@@ -241,7 +241,7 @@ impl UserStack {
 
 此外还有如下部分，这部分代码尤为重要，是加载应用程序的逻辑：
 
-```rust title="os/src/loader.rs" linenums=50
+```rust title="os/src/loader.rs" linenums="50"
 fn get_base_i(app_id: usize) -> usize {
     APP_BASE_ADDRESS + app_id * APP_SIZE_LIMIT
 }
