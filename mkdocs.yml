@@ -15,6 +15,7 @@ nav:
     - 实验1 - 独立的可执行程序: "exp1-independent-application.md"
     - 实验2 - 裸机环境和最小化内核: "exp2-bare-metal-env-and-minimum-core.md"
     - 实验3 - 批处理和特权级: "exp3-batch-and-privilege.md"
+    - 实验4 - 多道程序和协作式操作系统: "exp4-multiprogramming-and-cooperative-multitasking"
 
 extra_javascript:
   - https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js
