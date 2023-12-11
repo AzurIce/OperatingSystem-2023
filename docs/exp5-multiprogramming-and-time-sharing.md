@@ -228,11 +228,20 @@ pub fn trap_handler(cx: &mut TrapContext) -> &mut TrapContext {
 
 通过调用 `suspend_current_and_run_next` 实现应用的切换。
 
-然后修改 `os/src/main.rs`，在入口开始添加：
+然后修改 `os/src/main.rs` 中的入口：
 
 ```rust title="os/src/main.rs"
-trap::enable_timer_interrupt();
-timer::set_next_trigger();
+#[no_mangle]
+pub fn rust_main() -> ! {
+    clear_bss();
+    println!("[Kernel] Hello, world!");
+    trap::init();
+    loader::load_apps();
+    trap::enable_timer_interrupt();
+    timer::set_next_trigger();
+    task::run_first_task();
+    panic!("Unreachable in rust_main!");
+}
 ```
 
 至此，支持分时多任务和抢占式调度的操作系统实现完成。
