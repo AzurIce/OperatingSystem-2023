@@ -21,11 +21,11 @@ fn main() -> i32 {
         cur = next;
         if i % 10000 == 0 {
             println!("power_5 [{}/{}]", i, iter);
-            let current_timer = get_time();
-            let wait_for = current_timer + 50;
-            while get_time() < wait_for {
-                yield_();
-            }
+            // let current_timer = get_time();
+            // let wait_for = current_timer + 50;
+            // while get_time() < wait_for {
+            //     yield_();
+            // }
         }
     }
     println!("{}^{} = {}", p, iter, s[cur]);
