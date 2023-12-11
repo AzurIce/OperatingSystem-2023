@@ -3,6 +3,7 @@
 
 #[macro_use]
 extern crate user_lib;
+use user_lib::{get_time, yield_};
 
 const LEN: usize = 100;
 
@@ -20,6 +21,11 @@ fn main() -> i32 {
         cur = next;
         if i % 10000 == 0 {
             println!("power_3 [{}/{}]", i, iter);
+            let current_timer = get_time();
+            let wait_for = current_timer + 10;
+            while get_time() < wait_for {
+                yield_();
+            }
         }
     }
     println!("{}^{} = {}", p, iter, s[cur]);

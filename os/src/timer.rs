@@ -14,5 +14,7 @@ pub fn get_time_ms() -> usize {
 }
 
 pub fn set_next_trigger() {
-    set_timer(get_time() + CLOCK_FREQ / TICKS_PER_SEC);
+    let t = get_time() + CLOCK_FREQ / TICKS_PER_SEC;
+    // println!("set_next_trigger({})", t);
+    set_timer(t);
 }

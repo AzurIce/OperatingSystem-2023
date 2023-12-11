@@ -246,14 +246,165 @@ pub fn rust_main() -> ! {
 
 至此，支持分时多任务和抢占式调度的操作系统实现完成。
 
+运行效果如下：
+
+![image-20231211172008432](./assets/image-20231211172008432.png)
+
+![image-20231211172016914](./assets/image-20231211172016914.png)
+
+这样子还不太能体现得出来分时调度，我对几个应用程序做了修改：
+
+```rust title="00power3.rs"
+#![no_std]
+#![no_main]
+
+#[macro_use]
+extern crate user_lib;
+use user_lib::{get_time, yield_};
+
+const LEN: usize = 100;
+
+#[no_mangle]
+fn main() -> i32 {
+    let p = 3u64;
+    let m = 998244353u64;
+    let iter: usize = 200000;
+    let mut s = [0u64; LEN];
+    let mut cur = 0usize;
+    s[cur] = 1;
+    for i in 1..=iter {
+        let next = if cur + 1 == LEN { 0 } else { cur + 1 };
+        s[next] = s[cur] * p % m;
+        cur = next;
+        if i % 10000 == 0 {
+            println!("power_3 [{}/{}]", i, iter);
+            let current_timer = get_time();
+            let wait_for = current_timer + 10;
+            while get_time() < wait_for {
+                yield_();
+            }
+        }
+    }
+    println!("{}^{} = {}", p, iter, s[cur]);
+    println!("Test power_3 OK!");
+    0
+}
+```
+
+```rust title="01power5.rs"
+#![no_std]
+#![no_main]
+
+#[macro_use]
+extern crate user_lib;
+use user_lib::{get_time, yield_};
+
+const LEN: usize = 100;
+
+#[no_mangle]
+fn main() -> i32 {
+    let p = 5u64;
+    let m = 998244353u64;
+    let iter: usize = 140000;
+    let mut s = [0u64; LEN];
+    let mut cur = 0usize;
+    s[cur] = 1;
+    for i in 1..=iter {
+        let next = if cur + 1 == LEN { 0 } else { cur + 1 };
+        s[next] = s[cur] * p % m;
+        cur = next;
+        if i % 10000 == 0 {
+            println!("power_5 [{}/{}]", i, iter);
+            let current_timer = get_time();
+            let wait_for = current_timer + 50;
+            while get_time() < wait_for {
+                yield_();
+            }
+        }
+    }
+    println!("{}^{} = {}", p, iter, s[cur]);
+    println!("Test power_5 OK!");
+    0
+}
+```
+
+```rust title="02power7.rs"
+#![no_std]
+#![no_main]
+
+#[macro_use]
+extern crate user_lib;
+use user_lib::{get_time, yield_};
+
+const LEN: usize = 100;
+
+#[no_mangle]
+fn main() -> i32 {
+    let p = 7u64;
+    let m = 998244353u64;
+    let iter: usize = 160000;
+    let mut s = [0u64; LEN];
+    let mut cur = 0usize;
+    s[cur] = 1;
+    for i in 1..=iter {
+        let next = if cur + 1 == LEN { 0 } else { cur + 1 };
+        s[next] = s[cur] * p % m;
+        cur = next;
+        if i % 10000 == 0 {
+            println!("power_7 [{}/{}]", i, iter);
+            let current_timer = get_time();
+            let wait_for = current_timer + 100;
+            while get_time() < wait_for {
+                yield_();
+            }
+        }
+    }
+    println!("{}^{} = {}", p, iter, s[cur]);
+    println!("Test power_7 OK!");
+    0
+}
+```
+
+```rust title="03sleep.rs"
+#![no_std]
+#![no_main]
+
+#[macro_use]
+extern crate user_lib;
+
+use user_lib::{get_time, yield_};
+
+#[no_mangle]
+fn main() -> i32 {
+    println!("sleep start");
+    let current_timer = get_time();
+    let wait_for = current_timer + 3000;
+    while get_time() < wait_for {
+        yield_();
+    }
+    println!("Test sleep OK!");
+    0
+}
+```
+
+运行效果如下：
+
+![image-20231211174917184](./assets/image-20231211174917184.png)
+
+![image-20231211174928632](./assets/image-20231211174928632.png)
+
 ## 二、思考问题
+
+### 1. 分析分时多任务是如何实现的
+
+
+
+### 2. 分析抢占式调度是如何设计和实现的
+### 3. 对比上个实验实现的协作式调度与本实验实现的抢占式调度
+
+
 
 ## 三、Git 提交记录
 
-至此，支持分时多任务和抢占式调度的操作系统实现完成。
 
-4. 思考和回答问题
-    （1）分析分时多任务是如何实现的；
-    （2）分析抢占式调度是如何设计和实现的；
-    （3）对比上个实验实现的协作式调度与本实验实现的抢占式调度。
 
