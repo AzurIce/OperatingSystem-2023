@@ -11,6 +11,7 @@ mod syscall;
 mod config;
 mod loader;
 mod task;
+mod timer;
 
 use core::arch::global_asm;
 
