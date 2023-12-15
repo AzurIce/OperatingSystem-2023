@@ -1,9 +1,32 @@
+mod context;
+
+use core::arch::asm;
+use core::arch::global_asm;
+use riscv::register::{
+    mtvec::TrapMode,
+    stvec,
+    scause::{
+        self,
+        Trap,
+        Exception,
+        Interrupt,
+    },
+    stval,
+    sie,
+};
+pub use context::TrapContext;
+
+use crate::syscall::syscall;
 use crate::task::{
+    exit_current_and_run_next,
+    suspend_current_and_run_next,
     current_user_token,
     current_trap_cx,
 };
-
+use crate::timer::set_next_trigger;
 use crate::config::{TRAP_CONTEXT, TRAMPOLINE};
+
+global_asm!(include_str!("trap.S"));
 
 pub fn init() {
     set_kernel_trap_entry();
@@ -19,6 +42,10 @@ fn set_user_trap_entry() {
     unsafe {
         stvec::write(TRAMPOLINE as usize, TrapMode::Direct);
     }
+}
+
+pub fn enable_timer_interrupt() {
+    unsafe { sie::set_stimer(); }
 }
 
 #[no_mangle]
@@ -49,7 +76,6 @@ pub fn trap_handler() -> ! {
             panic!("Unsupported trap {:?}, stval = {:#x}!", scause.cause(), stval);
         }
     }
-    // 返回cx修改为trap_return();
     trap_return();
 }
 

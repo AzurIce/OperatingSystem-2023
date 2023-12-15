@@ -4,8 +4,12 @@ use crate::sync::UPSafeCell;
 use lazy_static::*;
 use switch::__switch;
 use task::{TaskControlBlock, TaskStatus};
+use context::TaskContext;
 use alloc::vec::Vec;
 
+mod context;
+mod switch;
+mod task;
 
 pub struct TaskManager {
     num_app: usize,

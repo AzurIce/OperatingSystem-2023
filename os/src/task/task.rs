@@ -54,3 +54,10 @@ impl TaskControlBlock {
         task_control_block
     }
 }
+
+#[derive(Copy, Clone, PartialEq)]
+pub enum TaskStatus {
+    Ready,
+    Running,
+    Exited,
+}
