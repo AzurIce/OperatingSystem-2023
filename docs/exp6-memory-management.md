@@ -349,7 +349,6 @@ pub type VPNRange = SimpleRange<VirtPageNum>;
 编辑 `os/Cargo.toml` 添加：
 
 ```toml title="os/Cargo.toml"
-[dependencies]
 bitflags = "1.2.1"
 ```
 
@@ -360,7 +359,8 @@ bitflags = "1.2.1"
 extern crate bitflags;
 ```
 
-首先，编辑 `os/src/mm/page_table.rs` 实现页表项中的标志位PTEFlags。
+编辑 `os/src/mm/mod.rs` 添加 `page_table` 模块，并创建对应的 `os/src/mm/page_table.rs` 实现页表项中的标志位PTEFlags。
+
 ```rust title="os/src/mm/page_table.rs"
 use bitflags::*;
 
@@ -419,15 +419,6 @@ impl PageTableEntry {
         (self.flags() & PTEFlags::X) != PTEFlags::empty()
     }
 }
-```
-
-修改 `os/src/mm/mod.rs` 增加如下内容：
-
-```rust title="os/src/mm/mod.rs"
-mod page_table;
-
-use page_table::{PTEFlags};
-pub use page_table::{PageTableEntry};
 ```
 
 ### 4. 实现物理帧的管理与分配
