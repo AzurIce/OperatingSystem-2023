@@ -748,6 +748,8 @@ impl PageTable {
 
 ### 6. 内核与应用的地址空间
 
+创建 `os/src/mm/memory_set.rs` 模块，并添加到 `os/src/mm/mod.rs`。
+
 内核与应用地址空间的实现在 `os/src/mm/memory_set` 子模块。
 
 #### 1> 实现地址空间抽象
@@ -795,6 +797,8 @@ bitflags! {
 // os/src/mm/memory_set.rs
 
 ```rust title="os/src/mm/memory_set.rs"
+use super::page_table::PageTable;
+
 pub struct MemorySet {
     page_table: PageTable,
     areas: Vec<MapArea>,
@@ -1147,10 +1151,10 @@ xmas-elf = "0.7.0"
 
 ```rust title="os/src/mm/memory_set.rs"
 use core::arch::asm;
-use super::{PageTable, PageTableEntry, PTEFlags};
-use super::{VirtPageNum, VirtAddr, PhysPageNum, PhysAddr};
-use super::{FrameTracker, frame_alloc};
-use super::{VPNRange, StepByOne};
+use super::page_table::{PageTable, PageTableEntry, PTEFlags};
+use super::address::{VirtPageNum, VirtAddr, PhysPageNum, PhysAddr};
+use super::frame_allocator::{FrameTracker, frame_alloc};
+use super::address::{VPNRange, StepByOne};
 use alloc::collections::BTreeMap;
 use alloc::vec::Vec;
 use riscv::register::satp;
