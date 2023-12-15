@@ -18,6 +18,7 @@ mod loader;
 mod task;
 mod timer;
 mod mm;
+mod sync;
 
 use core::arch::global_asm;
 

@@ -610,14 +610,6 @@ impl<T> UPSafeCell<T> {
 }
 ```
 
-编辑 `os/src/sync/mod.rs` 添加：
-
-```rust title="os/src/sync/mod.rs"
-mod up;
-
-pub use up::UPSafeCell;
-```
-
 #### 4> 物理帧管理测试
 
 最后，为了实现物理帧管理的测试，我们还需要修改如下部分的代码：
