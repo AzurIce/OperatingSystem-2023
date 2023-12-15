@@ -9,16 +9,16 @@ extern crate bitflags;
 
 #[macro_use]
 mod console;
-mod lang_items;
-mod sbi;
-mod trap;
-mod syscall;
 mod config;
+mod lang_items;
 mod loader;
+mod mm;
+mod sbi;
+mod sync;
+mod syscall;
 mod task;
 mod timer;
-mod mm;
-mod sync;
+mod trap;
 
 use core::arch::global_asm;
 
@@ -37,6 +37,7 @@ fn clear_bss() {
 pub fn rust_main() -> ! {
     clear_bss();
     println!("[Kernel] Hello, world!");
+    mm::remap_test();
     trap::init();
     loader::load_apps();
     trap::enable_timer_interrupt();
