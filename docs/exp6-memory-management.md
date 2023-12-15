@@ -126,7 +126,13 @@ pub fn rust_main() -> ! {
 
 ### 2. 实现虚拟地址与物理地址的基本定义
 
-首先，定义所需要的基本数据结构，包括物理地址、虚拟地址、物理页号、虚拟页号。定义在 `os/src/mm/address.rs` 中，具体如下：
+首先，定义所需要的基本数据结构，包括物理地址、虚拟地址、物理页号、虚拟页号。
+
+编辑 `os/src/mm/mod.rs` 添加 `address` 模块，并创建对应的 `os/src/mm/address.rs`：
+
+```rust title="os/src/mm/mod.rs"
+mod address;
+```
 
 ```rust title="os/src/mm/address.rs"
 #[repr(C)]
