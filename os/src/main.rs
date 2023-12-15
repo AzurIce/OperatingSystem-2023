@@ -1,6 +1,9 @@
 #![no_std]
 #![no_main]
 #![feature(panic_info_message)]
+#![feature(alloc_error_handler)]
+
+extern crate alloc;
 
 #[macro_use]
 mod console;
@@ -12,6 +15,7 @@ mod config;
 mod loader;
 mod task;
 mod timer;
+mod mm;
 
 use core::arch::global_asm;
 
