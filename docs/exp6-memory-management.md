@@ -433,7 +433,9 @@ pub const MEMORY_END: usize = 0x80800000;
 
 #### 2> 实现物理帧管理
 
-具体实现在 `os/src/mm/frame_allocator.rs` 中，具体代码如下：
+创建 `os/src/mm/frame_allocator.rs` 并将其添加到 `os/src/mm/mod.rs` 中。
+
+编辑 `os/src/mm/frame_allocator.rs`，实现物理帧管理，具体代码如下：
 
 ```rust title="os/src/mm/frame_allocator.rs"
 use super::{PhysAddr, PhysPageNum};
@@ -574,7 +576,9 @@ pub fn frame_allocator_test() {
 
 #### 3> 增加sync模块
 
-此外，还需要增加sync模块，实现UPSafeCell，编辑 `os/src/sync/up.rs`：
+创建 `os/src/sync/mod.rs` 以及 `os/src/sync/up.rs` 模块，并分别添加到 `os/src/main.rs` 和 `os/src/sync/mod.rs` 中。
+
+编辑 `os/src/sync/up.rs`，还需要增加sync模块，实现UPSafeCell，：
 
 ```rust title="os/src/sync/up.rs"
 use core::cell::{RefCell, RefMut};
