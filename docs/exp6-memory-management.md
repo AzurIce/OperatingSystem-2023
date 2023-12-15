@@ -623,19 +623,17 @@ pub const PAGE_SIZE_BITS: usize = 0xc;
 
 编辑 `os/src/mm/mod.rs`：
 
-```rust title="os/src/mm/mod.rs"
+```diff title="os/src/mm/mod.rs"
+mod heap_allocator;
 mod address;
+mod page_table;
 mod frame_allocator;
-
-use address::{VPNRange, StepByOne};
-pub use address::{PhysAddr, VirtAddr, PhysPageNum, VirtPageNum};
-pub use frame_allocator::{FrameTracker, frame_alloc};
 
 pub fn init() {
     heap_allocator::init_heap();
     heap_allocator::heap_test();
-    frame_allocator::init_frame_allocator();
-    frame_allocator::frame_allocator_test();
++    frame_allocator::init_frame_allocator();
++    frame_allocator::frame_allocator_test();
 }
 ```
 
@@ -669,7 +667,6 @@ impl PageTable {
 
 同时，还需要能够建立和拆除虚实地址之间的映射关系。
 ```rust title="os/src/mm/page_table.rs"
-
 impl PageTable {
     fn find_pte_create(&mut self, vpn: VirtPageNum) -> Option<&mut PageTableEntry> {
         let idxs = vpn.indexes();
@@ -710,7 +707,6 @@ impl PageTable {
 
 同时，为了方便后续的实现，还提供了手动查询页表的方法。
 ```rust title="os/src/mm/page_table.rs"
-
 impl PageTable {
     /// Temporarily used to get arguments from user space.
     pub fn from_token(satp: usize) -> Self {
