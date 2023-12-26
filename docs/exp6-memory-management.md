@@ -2081,6 +2081,8 @@ fn main() -> i32 {
 
 ## 三、Git 提交记录
 
+![image-20231226130927513](./assets/image-20231226130927513.png)
+
 ## 参考
 
 [^1]: https://rcore-os.cn/rCore-Tutorial-Book-v3/chapter4/3sv39-implementation-1.html
