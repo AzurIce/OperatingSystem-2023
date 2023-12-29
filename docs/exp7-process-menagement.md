@@ -264,12 +264,16 @@ pub fn main() -> i32 {
 
 首先修改 `os/src/syscall/mod.rs` 添加一系列系统调用的实现：
 
-```rust title="os/src/syscall/mod.rs"
+```diff title="os/src/syscall/mod.rs"
 const SYSCALL_READ: usize = 63;
-const SYSCALL_GETPID: usize = 172;
-const SYSCALL_FORK: usize = 220;
-const SYSCALL_EXEC: usize = 221;
-const SYSCALL_WAITPID: usize = 260;
+const SYSCALL_WRITE: usize = 64;
+const SYSCALL_EXIT: usize = 93;
+const SYSCALL_YIELD: usize = 124;
+const SYSCALL_GET_TIME: usize = 169;
++const SYSCALL_GETPID: usize = 172;
++const SYSCALL_FORK: usize = 220;
++const SYSCALL_EXEC: usize = 221;
++const SYSCALL_WAITPID: usize = 260;
 
 mod fs;
 mod process;
@@ -284,10 +288,10 @@ pub fn syscall(syscall_id: usize, args: [usize; 3]) -> isize {
         SYSCALL_EXIT => sys_exit(args[0] as i32),
         SYSCALL_YIELD => sys_yield(),
         SYSCALL_GET_TIME => sys_get_time(),
-        SYSCALL_GETPID => sys_getpid(),
-        SYSCALL_FORK => sys_fork(),
-        SYSCALL_EXEC => sys_exec(args[0] as *const u8),
-        SYSCALL_WAITPID => sys_waitpid(args[0] as isize, args[1] as *mut i32),
++        SYSCALL_GETPID => sys_getpid(),
++        SYSCALL_FORK => sys_fork(),
++        SYSCALL_EXEC => sys_exec(args[0] as *const u8),
++        SYSCALL_WAITPID => sys_waitpid(args[0] as isize, args[1] as *mut i32),
         _ => panic!("Unsupported syscall_id: {}", syscall_id),
     }
 }
@@ -298,8 +302,8 @@ pub fn syscall(syscall_id: usize, args: [usize; 3]) -> isize {
 ```rust title="os/src/syscall/fs.rs"
 use crate::task::{current_user_token, suspend_current_and_run_next};
 use crate::sbi::console_getchar;
-const FD_STDIN: usize = 0;
 
+const FD_STDIN: usize = 0;
 
 pub fn sys_read(fd: usize, buf: *const u8, len: usize) -> isize {
     match fd {
@@ -426,13 +430,63 @@ pub fn sys_waitpid(pid: isize, exit_code_ptr: *mut i32) -> isize {
 
 修改 `os/build.rs`：
 
-```rust
-writeln!(f, r#"
-    .global _app_names
-_app_names:"#)?;
-    for app in apps.iter() {
-        writeln!(f, r#"    .string "{}""#, app)?;
+```diff title="os/build.rs"
+use std::io::{Result, Write};
+use std::fs::{File, read_dir};
+
+fn main() {
+    println!("cargo:rerun-if-changed=../user/src/");
+    println!("cargo:rerun-if-changed={}", TARGET_PATH);
+    insert_app_data().unwrap();
+}
+
+static TARGET_PATH: &str = "../user/target/riscv64gc-unknown-none-elf/release/";
+
+fn insert_app_data() -> Result<()> {
+    let mut f = File::create("src/link_app.S").unwrap();
+    let mut apps: Vec<_> = read_dir("../user/src/bin")
+        .unwrap()
+        .into_iter()
+        .map(|dir_entry| {
+            let mut name_with_ext = dir_entry.unwrap().file_name().into_string().unwrap();
+            name_with_ext.drain(name_with_ext.find('.').unwrap()..name_with_ext.len());
+            name_with_ext
+        })
+        .collect();
+    apps.sort();
+
+    writeln!(f, r#"
+    .align 3
+    .section .data
+    .global _num_app
+_num_app:
+    .quad {}"#, apps.len())?;
+
+    for i in 0..apps.len() {
+        writeln!(f, r#"    .quad app_{}_start"#, i)?;
     }
+    writeln!(f, r#"    .quad app_{}_end"#, apps.len() - 1)?;
+
++    writeln!(f, r#"
++    .global _app_names
++_app_names:"#)?;
++    for app in apps.iter() {
++        writeln!(f, r#"    .string "{}""#, app)?;
++    }
+
+    for (idx, app) in apps.iter().enumerate() {
+        println!("app_{}: {}", idx, app);
+        writeln!(f, r#"
+    .section .data
+    .global app_{0}_start
+    .global app_{0}_end
+    .align 3
+app_{0}_start:
+    .incbin "{2}{1}"
+app_{0}_end:"#, idx, app, TARGET_PATH)?;
+    }
+    Ok(())
+}
 ```
 
 #### 2> 基于名字的应用加载
