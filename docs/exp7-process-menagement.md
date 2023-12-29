@@ -902,7 +902,7 @@ pub enum TaskStatus {
 
 修改任务管理器，将部分任务管理功能移到处理器管理中。
 
-编辑 os/src/task/manager.rs
+创建 os/src/task/manager.rs
 
 ```rust title="os/src/task/manager.rs"
 use crate::sync::UPSafeCell;
