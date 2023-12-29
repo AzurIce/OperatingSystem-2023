@@ -10,6 +10,7 @@ use alloc::vec::Vec;
 mod context;
 mod switch;
 mod task;
+mod pid;
 
 pub struct TaskManager {
     num_app: usize,
