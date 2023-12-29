@@ -13,6 +13,16 @@ _num_app:
     .quad app_6_start
     .quad app_6_end
 
+    .global _app_names
+_app_names:
+    .string "00power3"
+    .string "01power5"
+    .string "02power7"
+    .string "03sleep"
+    .string "04prime"
+    .string "console"
+    .string "initproc"
+
     .section .data
     .global app_0_start
     .global app_0_end
