@@ -110,6 +110,13 @@ impl VirtPageNum {
     }
 }
 
+impl PhysAddr {
+    pub fn get_mut<T>(&self) -> &'static mut T {
+        unsafe {
+            (self.0 as *mut T).as_mut().unwrap()
+        }
+    }
+}
 impl PhysPageNum {
     pub fn get_pte_array(&self) -> &'static mut [PageTableEntry] {
         let pa: PhysAddr = self.clone().into();
@@ -120,14 +127,12 @@ impl PhysPageNum {
     pub fn get_bytes_array(&self) -> &'static mut [u8] {
         let pa: PhysAddr = self.clone().into();
         unsafe {
-            core::slice::from_raw_parts_mut(pa.0 as *mut u8, PAGE_SIZE)
+            core::slice::from_raw_parts_mut(pa.0 as *mut u8, 4096)
         }
     }
     pub fn get_mut<T>(&self) -> &'static mut T {
         let pa: PhysAddr = self.clone().into();
-        unsafe {
-            (pa.0 as *mut T).as_mut().unwrap()
-        }
+        pa.get_mut()
     }
 }
 

@@ -132,3 +132,4 @@ pub fn frame_allocator_test() {
     drop(v);
     println!("frame_allocator_test passed!");
 }
+

@@ -43,3 +43,4 @@ pub fn heap_test() {
     drop(v);
     println!("heap_test passed!");
 }
+
